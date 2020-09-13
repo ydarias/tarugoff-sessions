@@ -2,6 +2,11 @@
 
 [![Build Status](https://travis-ci.org/ydarias/tarugoff-sessions.svg?branch=master)](https://travis-ci.org/ydarias/tarugoff-sessions)
 
+This project exposes a REST API to support the votes at Tarugoff Sessions page. It also contain the code to update the data from Twitter API.
+
+
+![component](docs/assets/tarugoff-services.png)
+
 ## First steps
 
 Install dependencies and transpile TS into JS.
