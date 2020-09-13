@@ -1,24 +1,25 @@
 import { SessionController } from './session.controller';
 import { SessionRepository } from './session.repository';
+import { Model } from 'mongoose';
+import { SessionEntity } from './schemas/session.schema';
 
 describe('SessionController', () => {
   let sessionController: SessionController;
   let sessionRepository: SessionRepository;
 
   beforeEach(async () => {
-    sessionRepository = new SessionRepository();
+    const sessionModel = {} as Model<SessionEntity>;
+    sessionRepository = new SessionRepository(sessionModel);
     sessionController = new SessionController(sessionRepository);
   });
 
   it('should return sessions provided by sessionRepository', async () => {
     jest.spyOn(sessionRepository, 'findSessions').mockResolvedValue([
       {
-        id: 'DB-id-1',
         sessionId: 1,
         votes: 4,
       },
       {
-        id: 'DB-id-2',
         sessionId: 2,
         votes: 6,
       },

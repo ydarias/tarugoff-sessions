@@ -4,7 +4,10 @@ export interface SessionResponse {
 }
 
 export interface Session {
-  id: string;
   sessionId: number;
+  votes: number;
+}
+
+export interface SessionUpdate {
   votes: number;
 }
