@@ -1,5 +1,7 @@
 # Tarugoff services
 
+[![Build Status](https://travis-ci.org/ydarias/tarugoff-sessions.svg?branch=master)](https://travis-ci.org/ydarias/tarugoff-sessions)
+
 ## First steps
 
 Install dependencies and transpile TS into JS.
