@@ -9,17 +9,14 @@ describe('AppController (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
-    let connection;
-    try {
-      connection = (await mongoose.connect(process.env.TARUGOFF_DB_URL)).connection;
-      await connection.useDb('tarugoff-sessions-tests-e2e').dropCollection('Sessions');
-    } finally {
-      if (connection) {
+    const connection = (await mongoose.connect(process.env.TARUGOFF_DB_URL)).connection;
+    await connection
+      .dropCollection('Sessions')
+      .then(async () => await connection.close())
+      .catch(async () => {
+        console.log('Collection Sessions does not exist');
         await connection.close();
-      }
-    }
-
-    process.env['TARUGOFF_DB_URL'] = 'mongodb://localhost/tarugoff-sessions-tests-e2e';
+      });
 
     const moduleRef: TestingModule = await Test.createTestingModule({
       imports: [AppModule],

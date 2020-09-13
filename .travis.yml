@@ -6,6 +6,9 @@ cache: npm
 
 jobs:
   include:
+    - stage: test
+      script:
+        - npm run test
     - stage: test-e2e
       before_script:
         - docker run -d --name mongo-local -p 27017:27017  mongo
