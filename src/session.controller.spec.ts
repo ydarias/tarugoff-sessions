@@ -7,7 +7,7 @@ describe('SessionController', () => {
   let sessionController: SessionController;
   let sessionRepository: SessionRepository;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const sessionModel = {} as Model<SessionEntity>;
     sessionRepository = new SessionRepository(sessionModel);
     sessionController = new SessionController(sessionRepository);

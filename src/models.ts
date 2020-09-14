@@ -11,3 +11,11 @@ export interface Session {
 export interface SessionUpdate {
   votes: number;
 }
+
+export interface Tweet {
+  creationDate: string;
+  id: number;
+  text: string;
+  user: string;
+  isRetweet: boolean;
+}
