@@ -30,14 +30,8 @@ export class AuditRepository {
     };
   }
 
-  async save(transientAudit: AuditRecord): Promise<AuditRecord> {
+  async save(transientAudit: AuditRecord): Promise<AuditEntity> {
     const createdAudit = new this.auditModel(transientAudit);
-    const storedAudit = await createdAudit.save();
-
-    return {
-      executionDate: storedAudit.executionDate,
-      maxId: storedAudit.maxId,
-      minId: storedAudit.minId,
-    };
+    return createdAudit.save();
   }
 }

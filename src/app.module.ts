@@ -9,6 +9,8 @@ import { AuditEntity, AuditSchema } from './schemas/audit.schema';
 import { TwitterService } from './twitter.service';
 import { AuditRepository } from './audit.repository';
 import { TwitterClient } from './clients/twitter.client';
+import { TweetEntity, TweetSchema } from './schemas/tweet.schema';
+import { TweetRepository } from './tweet.repository';
 
 @Module({
   imports: [
@@ -25,11 +27,22 @@ import { TwitterClient } from './clients/twitter.client';
           name: AuditEntity.name,
           schema: AuditSchema,
         },
+        {
+          name: TweetEntity.name,
+          schema: TweetSchema,
+        },
       ],
       'sessions',
     ),
   ],
   controllers: [SessionController, HealthController],
-  providers: [SessionRepository, AuditRepository, TwitterClient, TwitterService, SessionUpdaterService],
+  providers: [
+    SessionRepository,
+    AuditRepository,
+    TweetRepository,
+    TwitterClient,
+    TwitterService,
+    SessionUpdaterService,
+  ],
 })
 export class AppModule {}
