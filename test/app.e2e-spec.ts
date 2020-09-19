@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { SessionRepository } from '../src/session.repository';
+import { SessionRepository } from '../src/repositories/session.repository';
 import * as mongoose from 'mongoose';
 
 describe('AppController (e2e)', () => {

@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import { Tweet } from './models';
-import { TweetsPage } from './clients/models';
+import { TweetsPage } from '../clients/models';
 import { Injectable } from '@nestjs/common';
-import { TwitterClient } from './clients/twitter.client';
+import { TwitterClient } from '../clients/twitter.client';
 
 @Injectable()
 export class TwitterService {

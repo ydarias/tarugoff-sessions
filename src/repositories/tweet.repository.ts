@@ -2,9 +2,9 @@ import * as _ from 'lodash';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Tweet } from './models';
-import { AuditEntity } from './schemas/audit.schema';
-import { TweetEntity } from './schemas/tweet.schema';
+import { Tweet } from '../services/models';
+import { AuditEntity } from '../schemas/audit.schema';
+import { TweetEntity } from '../schemas/tweet.schema';
 
 @Injectable()
 export class TweetRepository {

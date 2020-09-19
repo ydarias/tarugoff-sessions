@@ -1,4 +1,4 @@
-import { Tweet } from '../models';
+import { Tweet } from '../services/models';
 import * as _ from 'lodash';
 
 export class TweetsUtils {

@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Session, Tweet } from '../models';
+import { Session, Tweet } from '../services/models';
 
 export class SessionUtils {
   static parse(tweets: Tweet[] = []): Session[] {

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { AuditRecord } from './models';
-import { AuditEntity } from './schemas/audit.schema';
+import { AuditRecord } from '../services/models';
+import { AuditEntity } from '../schemas/audit.schema';
 
 @Injectable()
 export class AuditRepository {

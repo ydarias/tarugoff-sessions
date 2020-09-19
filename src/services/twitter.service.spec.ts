@@ -1,6 +1,6 @@
 import { TwitterService } from './twitter.service';
-import { TweetsPage } from './clients/models';
-import { TwitterClient } from './clients/twitter.client';
+import { TweetsPage } from '../clients/models';
+import { TwitterClient } from '../clients/twitter.client';
 
 describe('TwitterService', () => {
   let twitterService: TwitterService;

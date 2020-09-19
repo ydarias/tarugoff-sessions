@@ -3,12 +3,12 @@ import { Mutex, withTimeout } from 'async-mutex';
 import { Injectable } from '@nestjs/common';
 
 import { AuditRecord, Tweet } from './models';
-import { AuditRepository } from './audit.repository';
+import { AuditRepository } from '../repositories/audit.repository';
 import { TwitterService } from './twitter.service';
-import { TweetsUtils } from './utils/tweets.utils';
-import { SessionUtils } from './utils/session.utils';
-import { SessionRepository } from './session.repository';
-import { TweetRepository } from './tweet.repository';
+import { TweetsUtils } from '../utils/tweets.utils';
+import { SessionUtils } from '../utils/session.utils';
+import { SessionRepository } from '../repositories/session.repository';
+import { TweetRepository } from '../repositories/tweet.repository';
 
 @Injectable()
 export class SessionUpdaterService {
@@ -20,11 +20,11 @@ export class SessionUpdaterService {
     private readonly tweetRepository: TweetRepository,
     private readonly twitterService: TwitterService,
   ) {
-    this.mutex = withTimeout(new Mutex(), 500, new LockNotAcquiredError()) as Mutex;
+    this.mutex = withTimeout(new Mutex(), 1, new LockNotAcquiredError()) as Mutex;
   }
 
   async update(): Promise<void> {
-    await this.mutex.acquire().then(async () => {
+    await this.mutex.acquire().then(async release => {
       const executionDate = moment()
         .utc()
         .toDate();
@@ -35,6 +35,8 @@ export class SessionUpdaterService {
       await this.sessionRepository.bulkUpdate(updatedSessions);
 
       await this.createAuditRecord(executionDate, newTweets, lastAuditRecord);
+
+      release();
     });
   }
 

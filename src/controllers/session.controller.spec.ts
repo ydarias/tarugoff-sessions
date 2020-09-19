@@ -1,7 +1,7 @@
 import { SessionController } from './session.controller';
-import { SessionRepository } from './session.repository';
+import { SessionRepository } from '../repositories/session.repository';
 import { Model } from 'mongoose';
-import { SessionEntity } from './schemas/session.schema';
+import { SessionEntity } from '../schemas/session.schema';
 
 describe('SessionController', () => {
   let sessionController: SessionController;

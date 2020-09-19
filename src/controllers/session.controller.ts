@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
+import { SessionRepository } from '../repositories/session.repository';
 import { SessionResponse } from './models';
-import { SessionRepository } from './session.repository';
 
 @Controller('/sessions')
 export class SessionController {

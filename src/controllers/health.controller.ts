@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
+import { LockNotAcquiredError, SessionUpdaterService } from '../services/sessionUpdater.service';
 import { HealthResponse, Status } from './models';
-import { LockNotAcquiredError, SessionUpdaterService } from './sessionUpdater.service';
 
 @Controller('/health')
 export class HealthController {

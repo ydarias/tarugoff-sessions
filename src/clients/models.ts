@@ -1,4 +1,4 @@
-import { Tweet } from '../models';
+import { Tweet } from '../services/models';
 
 export interface TweetsPage {
   maxId: string;
