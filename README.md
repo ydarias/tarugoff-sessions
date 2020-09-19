@@ -38,6 +38,14 @@ npm start:dev
 
 Both commands watch for changes into the source code to rebuild the project and make the changes available.
 
+### API documentation
+
+The API is "documented" with Open API
+
+```
+http://localhost:3000/api
+```
+
 ## Deployment
 
 To deploy a new version from a local environment.

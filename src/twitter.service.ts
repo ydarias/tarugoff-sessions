@@ -1,7 +1,10 @@
 import * as _ from 'lodash';
 import { Tweet } from './models';
-import { TweetsPage, TwitterClient } from './clients/models';
+import { TweetsPage } from './clients/models';
+import { Injectable } from '@nestjs/common';
+import { TwitterClient } from './clients/twitter.client';
 
+@Injectable()
 export class TwitterService {
   constructor(private readonly twitterClient: TwitterClient) {}
 

@@ -1,12 +1,13 @@
 import { TwitterService } from './twitter.service';
-import { TweetsPage, TwitterClient } from './clients/models';
+import { TweetsPage } from './clients/models';
+import { TwitterClient } from './clients/twitter.client';
 
 describe('TwitterService', () => {
   let twitterService: TwitterService;
   let twitterClient: TwitterClient;
 
   beforeEach(() => {
-    twitterClient = new MockedTwitterClient();
+    twitterClient = new MockedTwitterClient() as TwitterClient;
     twitterService = new TwitterService(twitterClient);
   });
 
@@ -39,7 +40,7 @@ describe('TwitterService', () => {
   });
 });
 
-class MockedTwitterClient implements TwitterClient {
+class MockedTwitterClient {
   async getTarugoffTweets(minId = '0', maxId = '0'): Promise<TweetsPage> {
     if (maxId === '0') {
       return {

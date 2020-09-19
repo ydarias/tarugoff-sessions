@@ -3,6 +3,12 @@ import { SessionController } from './session.controller';
 import { SessionRepository } from './session.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SessionEntity, SessionSchema } from './schemas/session.schema';
+import { HealthController } from './health.controller';
+import { SessionUpdaterService } from './sessionUpdater.service';
+import { AuditEntity, AuditSchema } from './schemas/audit.schema';
+import { TwitterService } from './twitter.service';
+import { AuditRepository } from './audit.repository';
+import { TwitterClient } from './clients/twitter.client';
 
 @Module({
   imports: [
@@ -15,11 +21,15 @@ import { SessionEntity, SessionSchema } from './schemas/session.schema';
           name: SessionEntity.name,
           schema: SessionSchema,
         },
+        {
+          name: AuditEntity.name,
+          schema: AuditSchema,
+        },
       ],
       'sessions',
     ),
   ],
-  controllers: [SessionController],
-  providers: [SessionRepository],
+  controllers: [SessionController, HealthController],
+  providers: [SessionRepository, AuditRepository, TwitterClient, TwitterService, SessionUpdaterService],
 })
 export class AppModule {}

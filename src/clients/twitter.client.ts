@@ -2,33 +2,19 @@ import { promisify } from 'util';
 import axios from 'axios';
 import * as request from 'request';
 import * as _ from 'lodash';
-import { TweetsPage, TwitterClient } from './models';
-import { Tweet } from '../models';
+import { TweetsPage } from './models';
+import { Injectable } from '@nestjs/common';
+import { TweetsUtils } from '../utils/tweets.utils';
 
-export class SimpleTwitterClient implements TwitterClient {
+@Injectable()
+export class TwitterClient {
   private bearerToken: string;
+  private readonly consumerKey: string;
+  private readonly consumerSecret: string;
 
-  constructor(private readonly consumerKey: string, private readonly consumerSecret: string) {}
-
-  async login(): Promise<string> {
-    const requestConfig = {
-      url: 'https://api.twitter.com/oauth2/token',
-      auth: {
-        user: this.consumerKey,
-        pass: this.consumerSecret,
-      },
-      form: {
-        grant_type: 'client_credentials',
-      },
-    };
-
-    const post = promisify(request.post);
-    const response = await post(requestConfig);
-    if (response.statusCode !== 200) {
-      throw new Error(JSON.stringify(response.body));
-    }
-
-    return JSON.parse(response.body)['access_token'];
+  constructor() {
+    this.consumerKey = process.env.TWITTER_CONSUMER_KEY;
+    this.consumerSecret = process.env.TWITTER_CONSUMER_SECRET;
   }
 
   async getTarugoffTweets(minId = '0', maxId = '0'): Promise<TweetsPage> {
@@ -63,6 +49,27 @@ export class SimpleTwitterClient implements TwitterClient {
     return this.bearerToken;
   }
 
+  private async login(): Promise<string> {
+    const requestConfig = {
+      url: 'https://api.twitter.com/oauth2/token',
+      auth: {
+        user: this.consumerKey,
+        pass: this.consumerSecret,
+      },
+      form: {
+        grant_type: 'client_credentials',
+      },
+    };
+
+    const post = promisify(request.post);
+    const response = await post(requestConfig);
+    if (response.statusCode !== 200) {
+      throw new Error(JSON.stringify(response.body));
+    }
+
+    return JSON.parse(response.body)['access_token'];
+  }
+
   private toTweetsPage(data: any): TweetsPage {
     const tweets = data.statuses.map(tweet => ({
       creationDate: tweet.created_at,
@@ -73,23 +80,9 @@ export class SimpleTwitterClient implements TwitterClient {
     }));
 
     return {
-      maxId: this.getMaxId(tweets),
-      minId: this.getMinId(tweets),
+      maxId: TweetsUtils.getMaxId(tweets),
+      minId: TweetsUtils.getMinId(tweets),
       tweets,
     };
-  }
-
-  private getMaxId(tweets: Tweet[]): string {
-    return _.chain(tweets)
-      .map(tweet => tweet.id)
-      .max()
-      .value();
-  }
-
-  private getMinId(tweets: Tweet[]): string {
-    return _.chain(tweets)
-      .map(tweet => tweet.id)
-      .min()
-      .value();
   }
 }
