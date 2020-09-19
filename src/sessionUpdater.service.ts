@@ -1,7 +1,8 @@
 import * as moment from 'moment';
+import { Mutex, withTimeout } from 'async-mutex';
 import { Injectable } from '@nestjs/common';
 
-import { AuditRecord, Session, Tweet } from './models';
+import { AuditRecord, Tweet } from './models';
 import { AuditRepository } from './audit.repository';
 import { TwitterService } from './twitter.service';
 import { TweetsUtils } from './utils/tweets.utils';
@@ -11,26 +12,30 @@ import { TweetRepository } from './tweet.repository';
 
 @Injectable()
 export class SessionUpdaterService {
+  private readonly mutex: Mutex;
+
   constructor(
     private readonly auditRepository: AuditRepository,
     private readonly sessionRepository: SessionRepository,
     private readonly tweetRepository: TweetRepository,
     private readonly twitterService: TwitterService,
-  ) {}
+  ) {
+    this.mutex = withTimeout(new Mutex(), 500, new LockNotAcquiredError()) as Mutex;
+  }
 
-  async update(): Promise<Session[]> {
-    const executionDate = moment()
-      .utc()
-      .toDate();
+  async update(): Promise<void> {
+    await this.mutex.acquire().then(async () => {
+      const executionDate = moment()
+        .utc()
+        .toDate();
 
-    const lastAuditRecord = await this.auditRepository.getLastAuditRecord();
-    const newTweets = await this.twitterService.findTweetsUntil(lastAuditRecord.maxId);
-    const updatedSessions = SessionUtils.parse(newTweets);
-    await this.sessionRepository.bulkUpdate(updatedSessions);
+      const lastAuditRecord = await this.auditRepository.getLastAuditRecord();
+      const newTweets = await this.twitterService.findTweetsUntil(lastAuditRecord.maxId);
+      const updatedSessions = SessionUtils.parse(newTweets);
+      await this.sessionRepository.bulkUpdate(updatedSessions);
 
-    await this.createAuditRecord(executionDate, newTweets, lastAuditRecord);
-
-    return updatedSessions;
+      await this.createAuditRecord(executionDate, newTweets, lastAuditRecord);
+    });
   }
 
   async createAuditRecord(executionDate: Date, tweets: Tweet[], lastAuditRecord: AuditRecord): Promise<void> {
@@ -42,3 +47,5 @@ export class SessionUpdaterService {
     await this.tweetRepository.bulkInsert(tweets, auditRecord);
   }
 }
+
+export class LockNotAcquiredError extends Error {}

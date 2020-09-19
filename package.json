@@ -24,6 +24,7 @@
     "@nestjs/mongoose": "^7.0.2",
     "@nestjs/platform-express": "^6.10.14",
     "@nestjs/swagger": "^4.6.0",
+    "async-mutex": "^0.2.4",
     "axios": "^0.20.0",
     "lodash": "^4.17.20",
     "moment": "^2.28.0",

@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthResponse, Status } from './models';
-import { SessionUpdaterService } from './sessionUpdater.service';
+import { LockNotAcquiredError, SessionUpdaterService } from './sessionUpdater.service';
 
 @Controller('/health')
 export class HealthController {
@@ -8,7 +8,13 @@ export class HealthController {
 
   @Get()
   async getHealth(): Promise<HealthResponse> {
-    const result = await this.sessionUpdater.update();
+    try {
+      await this.sessionUpdater.update();
+    } catch (e) {
+      if (e instanceof LockNotAcquiredError) {
+        console.log('Lock busy');
+      }
+    }
 
     return {
       status: Status.OK,
