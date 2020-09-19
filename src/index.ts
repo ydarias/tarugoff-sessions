@@ -1,17 +1,14 @@
-import { TwitterClient } from './clients/twitterClient';
+import { SimpleTwitterClient } from './clients/simpleTwitterClient';
+import { TwitterService } from './twitter.service';
 
 const consumer_key = process.env.TWITTER_CONSUMER_KEY;
 const consumer_secret = process.env.TWITTER_CONSUMER_SECRET;
 
 (async () => {
-  const client = new TwitterClient(consumer_key, consumer_secret);
-  const tarugoffTweets = await client.getTarugoffTweets();
+  const twitterClient = new SimpleTwitterClient(consumer_key, consumer_secret);
+  const twitterService = new TwitterService(twitterClient);
 
-  tarugoffTweets.forEach(tweet => console.log(tweet));
+  const tweets = await twitterService.findTweetsUntil();
 
-  const lastId = tarugoffTweets[tarugoffTweets.length - 1].id;
-
-  const tarugoffTweets2 = await client.getTarugoffTweets(lastId);
-
-  tarugoffTweets2.forEach(tweet => console.log(tweet));
+  tweets.forEach(tweet => console.log(tweet));
 })();

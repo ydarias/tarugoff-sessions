@@ -14,7 +14,7 @@ export interface SessionUpdate {
 
 export interface Tweet {
   creationDate: string;
-  id: number;
+  id: string;
   text: string;
   user: string;
   isRetweet: boolean;
