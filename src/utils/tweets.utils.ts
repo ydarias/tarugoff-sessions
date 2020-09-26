@@ -15,4 +15,11 @@ export class TweetsUtils {
       .min()
       .value();
   }
+
+  static removeDuplicatesAndRetweets(tweets: Tweet[]): Tweet[] {
+    return _.chain(tweets)
+      .filter(tweet => !tweet.isRetweet)
+      .uniqBy('id')
+      .value();
+  }
 }

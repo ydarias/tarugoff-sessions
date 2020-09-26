@@ -1,8 +1,8 @@
-import * as _ from 'lodash';
 import { Tweet } from './models';
 import { TweetsPage } from '../clients/models';
 import { Injectable } from '@nestjs/common';
 import { TwitterClient } from '../clients/twitter.client';
+import { TweetsUtils } from '../utils/tweets.utils';
 
 @Injectable()
 export class TwitterService {
@@ -21,13 +21,6 @@ export class TwitterService {
       lastQuery = tweetsPage.minId;
     } while (tweetsPage.tweets.length > 0);
 
-    return this.removeDuplicatesAndRetweets(tweets);
-  }
-
-  private removeDuplicatesAndRetweets(tweets: any[]): Tweet[] {
-    return _.chain(tweets)
-      .filter(tweet => !tweet.isRetweet)
-      .uniqBy('id')
-      .value();
+    return TweetsUtils.removeDuplicatesAndRetweets(tweets);
   }
 }
