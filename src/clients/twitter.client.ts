@@ -73,7 +73,7 @@ export class TwitterClient {
   private toTweetsPage(data: any): TweetsPage {
     const tweets = data.statuses.map(tweet => ({
       creationDate: tweet.created_at,
-      id: tweet.id as number,
+      id: tweet.id_str,
       text: tweet.text,
       user: tweet.user.screen_name,
       isRetweet: _.has(tweet, 'retweeted_status'),
